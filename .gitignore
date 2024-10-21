@@ -1,0 +1,4 @@
+.env
+/config/config.yml
+app.log
+go-auth.*
