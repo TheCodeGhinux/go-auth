@@ -15,7 +15,7 @@ func Route() {
 
 	RouteRegister(r)
 
-	err := r.Run(fmt.Sprintf("%s:%s", configs.Server.Host, configs.Server.Port)) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	err := r.Run(fmt.Sprintf("%s:%s", configs.Server.Host, configs.Server.Port))
 
 	if err != nil {
 		log.Fatal("Error starting server in routing: ", err)

@@ -22,8 +22,8 @@ type Server struct {
 }
 
 type DB struct {
-	Host string
-	Port string
+	Host     string
+	Port     string
 	User     string
 	Password string
 	Dbname   string
