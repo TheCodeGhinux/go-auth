@@ -3,7 +3,7 @@ package routers
 import (
 	"fmt"
 
-	controller "github.com/TheCodeGhinux/go-auth/pkg/controllers/auth"
+	controller "github.com/TheCodeGhinux/go-auth/pkg/controllers/user"
 	"github.com/TheCodeGhinux/go-auth/pkg/repository/db"
 	"github.com/gin-gonic/gin"
 )

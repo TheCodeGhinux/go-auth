@@ -19,33 +19,6 @@ var (
 	customizer = g.Validator(models.CreateUserRequestModel{})
 )
 
-func GetUser(c *gin.Context, id string, db *gorm.DB) (*models.User, error) {
-
-	// Validate UUID format
-	// if _, err := uuid.Parse(id); err != nil {
-	// 	utils.SendError(c, http.StatusBadRequest, "Invalid user ID format")
-	// 	return models.User{}, err
-	// }
-	if id == "" {
-		fmt.Printf("Id found: %+v\n", id)
-		utils.SendError(c, http.StatusBadRequest, "Invalid user ID, please provide a valid user ID")
-		return nil, nil
-	}
-
-	user, _ := models.FindUserByID(id, db)
-	// if err != nil {
-	// 	utils.SendError(c, http.StatusInternalServerError, "Failed to retrieve user")
-	// 	return models.User{}, err
-	// }
-
-	if user == nil {
-		utils.SendError(c, http.StatusNotFound, "User not found")
-		return nil, nil
-	}
-
-	return user, nil
-}
-
 func RegisterUser(c *gin.Context, db *gorm.DB) (*models.User, error) {
 	body := &models.CreateUserRequestModel{}
 
