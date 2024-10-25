@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -18,4 +19,23 @@ type Profile struct {
 	CreatedAt time.Time      `gorm:"column:created_at; not null; autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at; null; autoUpdateTime" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+}
+
+func FindUserUsername(user_name string, db *gorm.DB) (*Profile, error) {
+	var profile Profile
+	result := db.Where("user_name = ?", user_name).First(&profile)
+
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			// No user found
+			return nil, nil
+		}
+		// Log and return unexpected errors
+		fmt.Printf("Unexpected error: %v\n", result.Error)
+		return nil, result.Error
+	}
+
+	// Log the found user
+	fmt.Printf("User found: %+v\n", profile)
+	return &profile, nil
 }

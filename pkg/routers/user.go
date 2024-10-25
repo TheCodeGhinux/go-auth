@@ -11,10 +11,9 @@ import (
 func User(router *gin.Engine, ApiVersion string, db *db.Database) *gin.Engine {
 	userController := controller.UserController{Db: db}
 
-	userGroup := router.Group(fmt.Sprintf("%v/auth", ApiVersion))
+	userGroup := router.Group(fmt.Sprintf("%v/users", ApiVersion))
 	{
-		userGroup.GET("users/:id", userController.FindUserById)
-		// authGroup.POST("/register", controllers.Register)
+		userGroup.GET("/:id", userController.FindUserById)
 	}
 	return router
 

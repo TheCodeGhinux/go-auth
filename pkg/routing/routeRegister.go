@@ -11,7 +11,6 @@ func RouteRegister(router *gin.Engine) {
 
 	apiVersion := "api/v1"
 	greeting.Greeting(router)
-	// routers.Auth(router, "v1")
-	routers.Auth(router, apiVersion)
+	routers.Auth(router, apiVersion, db.DB)
 	routers.User(router, apiVersion, db.DB)
 }

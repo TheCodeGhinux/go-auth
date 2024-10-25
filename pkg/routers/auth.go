@@ -1,17 +1,19 @@
 package routers
 
 import (
-	// "fmt"
+	"fmt"
 
+	controller "github.com/TheCodeGhinux/go-auth/pkg/controllers/auth"
+	"github.com/TheCodeGhinux/go-auth/pkg/repository/db"
 	"github.com/gin-gonic/gin"
 )
 
-func Auth(router *gin.Engine, ApiVersion string,) *gin.Engine {
+func Auth(router *gin.Engine, ApiVersion string, db *db.Database) *gin.Engine  {
+	authController := controller.UserController{Db: db}
 
-	// authGroup := router.Group(fmt.Sprintf("%v/auth", ApiVersion))
+	authGroup := router.Group(fmt.Sprintf("%v/auth", ApiVersion))
 	{
-		// authGroup.POST("/login", controllers.Login)
-		// authGroup.POST("/register", controllers.Register)
+		authGroup.POST("/register", authController.RegisterUser)
 	}
 	return router
 
