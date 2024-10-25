@@ -10,18 +10,18 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetUser(c *gin.Context, id string, db *gorm.DB) (*models.User, error) {
+func GetUserById(c *gin.Context, id string, db *gorm.DB) (string, int, *models.User, error) {
 	if id == "" {
 		fmt.Printf("Id found: %+v\n", id)
 		utils.SendError(c, http.StatusBadRequest, "Invalid user ID, please provide a valid user ID")
-		return nil, nil
+		return "", 0, nil, nil
 	}
 
 	user, _ := models.FindUserByID(id, db)
 	if user == nil {
 		utils.SendError(c, http.StatusNotFound, "User not found")
-		return nil, nil
+		return "", 0, nil, nil
 	}
 
-	return user, nil
+	return "User fetched successfully", http.StatusOK, user, nil
 }
