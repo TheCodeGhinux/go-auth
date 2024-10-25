@@ -1,0 +1,16 @@
+app:
+  name: "Go gin auth api"
+  desc: "Auth microservice built using Gin Golang"
+
+server:
+  host: 'localhost' 
+  port: 8081
+
+db:
+  host: 'db-host'
+  port: db-port
+  user: 'db-user'
+  password: 'db-password'
+  dbname: 'dbname'
+  
+

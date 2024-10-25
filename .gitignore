@@ -1,0 +1,7 @@
+.env
+/config/config.yml
+app.log
+go-auth.*
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
