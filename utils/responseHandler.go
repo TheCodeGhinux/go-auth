@@ -11,6 +11,14 @@ type ErrorResponse struct {
 	Message    interface{} `json:"message"`
 }
 
+type ApiResponse struct {
+	Message    string      `json:"message"`
+	Status     string      `json:"status"`
+	StatusCode int         `json:"status_code"`
+	Data       interface{} `json:"data,omitempty"`
+}
+
+
 // SendError formats and sends a standardized error response
 func SendError(c *gin.Context, statusCode int, message interface{}) {
 	c.JSON(statusCode, ErrorResponse{
@@ -18,4 +26,14 @@ func SendError(c *gin.Context, statusCode int, message interface{}) {
 		StatusCode: statusCode,
 		Message:    message,
 	})
+}
+
+func RespondHandler(c *gin.Context, message string, statusCode int, data interface{}) {
+	response := ApiResponse{
+		Message:    message,
+		Status:     "Sucess",
+		StatusCode: statusCode,
+		Data:       data,
+	}
+	c.JSON(statusCode, response)
 }

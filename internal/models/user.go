@@ -34,6 +34,11 @@ type CreateUserRequestModel struct {
 	UserName    string `json:"user_name"`
 }
 
+type LoginUserRequestModel struct {
+	Email    string `json:"email" binding:"required,email" required:"Email is required"`
+	Password string `json:"password" binding:"required,min=8" required:"Password is required and must be at least 8 characters long"`
+}
+
 // CreateUser inserts a new user into the database
 func CreateUser(user *User, db *gorm.DB) error {
 	result := db.Create(user)
@@ -62,7 +67,7 @@ func FindUserByID(id string, db *gorm.DB) (*User, error) {
 //	}
 func FindUserByEmail(email string, db *gorm.DB) (*User, error) {
 	var user User
-	result := db.Where("email = ?", email).First(&user)
+	result :=db.Preload("Profile").Where("email = ?", email).First(&user)
 
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {

@@ -10,6 +10,7 @@ type AppConfig struct {
 	App    App
 	Server Server
 	DB     DB
+	Token  Token
 }
 
 type App struct {
@@ -27,6 +28,11 @@ type DB struct {
 	User     string
 	Password string
 	Dbname   string
+}
+
+type Token struct {
+	Secret string
+	Duration string
 }
 
 func SetupConfig() {

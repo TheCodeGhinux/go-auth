@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/TheCodeGhinux/go-auth/internal/models"
+	"github.com/TheCodeGhinux/go-auth/pkg/middlewares"
 	"github.com/TheCodeGhinux/go-auth/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golodash/galidator/v2"
@@ -56,6 +57,45 @@ func RegisterUser(c *gin.Context, db *gorm.DB) (*models.User, error) {
 	}
 
 	return user, nil
+}
+
+func LoginUser(c *gin.Context, db *gorm.DB) (string, int, gin.H, error) {
+	body := &models.LoginUserRequestModel{}
+
+	// Bind and validate input
+	if err := c.ShouldBindJSON(&body); err != nil {
+		utils.SendError(c, http.StatusBadRequest, customizer.DecryptErrors(err))
+		return "GGH", 200, nil, nil
+	}
+
+	// Find the user by email
+	user, _ := models.FindUserByEmail(body.Email, db)
+
+	if user == nil {
+		utils.SendError(c, http.StatusNotFound, "User not found")
+		return "", 0, nil, nil
+	}
+
+	// Compare the provided password with the hashed password
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password)); err != nil {
+		utils.SendError(c, http.StatusUnauthorized, "Invalid email or password")
+		return "", 0, nil, nil
+	}
+
+	// Generate a new JWT token
+	token, err := middlewares.GenerateToken(user)
+	if err != nil {
+		utils.SendError(c, http.StatusInternalServerError, "Failed to generate token")
+		return "", 0, nil, nil 
+	}
+
+	middlewares.SetCookie(c, token.AccessToken)
+
+	responseData := gin.H{
+		"access_token": token.AccessToken,
+		"user":  user,
+	}
+	return "Login successful", http.StatusOK, responseData, nil
 }
 
 func hashPassword(password string) (string, error) {
@@ -113,3 +153,4 @@ func checkUserExistence(email string, db *gorm.DB) error {
 	}
 	return nil
 }
+

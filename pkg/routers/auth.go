@@ -8,12 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Auth(router *gin.Engine, ApiVersion string, db *db.Database) *gin.Engine  {
+func Auth(router *gin.Engine, ApiVersion string, db *db.Database) *gin.Engine {
 	authController := controller.UserController{Db: db}
 
 	authGroup := router.Group(fmt.Sprintf("%v/auth", ApiVersion))
 	{
 		authGroup.POST("/register", authController.RegisterUser)
+		authGroup.POST("/login", authController.LoginUser)
 	}
 	return router
 

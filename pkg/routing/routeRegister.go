@@ -13,4 +13,5 @@ func RouteRegister(router *gin.Engine) {
 	greeting.Greeting(router)
 	routers.Auth(router, apiVersion, db.DB)
 	routers.User(router, apiVersion, db.DB)
+
 }
